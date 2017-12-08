@@ -52,14 +52,14 @@ int main(int argc, char *argv[])
 
     for(;fscanf(fin1,"%s",f1Line)!=EOF;){
 
-        if(strncmp(f1Line,"<time>",6)==0 && timeGet1!=0){ //taking time value (just a check)
+        //if(strncmp(f1Line,"<time>",6)==0 && timeGet1!=0){ //taking time value (just a check)
 
-            sscanf(f1Line,"<time>%s</time>", time1);
-            timeGet1=1;
+        //    sscanf(f1Line,"<time>%s</time>", time1);
+        //    timeGet1=1;
 
-            }
+        //    }
 
-        if(strncmp(f1Line,"<gpxtpx:atemp>",14)==0){
+        if(strncmp(f1Line,"<gpxtpx:TrackPointExtension>",28)==0){ //usually in this field there are hr values
 
         sprintf(f2Line," <gpxtpx:hr>%d</gpxtpx:hr>", takeField(fin2,cmd));
 
@@ -92,17 +92,17 @@ int takeField(FILE *fp, command field){
     int flag=0;
 
         for(;fscanf(fp,"%s",buffer)!=EOF;){
-            if(strncmp(buffer,"<time>",6)==0 && timeGet2!=0){ //taking time value (just a check)
+          //  if(strncmp(buffer,"<time>",6)==0 && timeGet2!=0){ //taking time value (just a check)
 
-            sscanf(buffer,"<time>%s</time>", time2);
-            timeGet2=1;
+          //  sscanf(buffer,"<time>%s</time>", time2);
+           // timeGet2=1;
 
-            if(strcmp(time2,time1)>5){
-                printf("too much displacement for the activities (more than 5 seconds)!\n");
-                return 1;
-            }
+           // if(strcmp(time2,time1)>5){
+            //    printf("too much displacement for the activities (more than 5 seconds)!\n");
+            //    return 1;
+           // }
 
-            }
+           // }
             switch (field){
 
                 case 1:
@@ -121,6 +121,11 @@ int takeField(FILE *fp, command field){
 
         if(flag==1) // the field has been found, exit
             break;
+
+            }
+            if(feof(fp)){
+                printf("file2 ended before the first\n");
+                return 2;
 
             }
 
